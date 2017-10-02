@@ -21,6 +21,7 @@ class JDHorizon:
         return julian_day_n
 
     # leave alone temporarily, may configure as one time function on main class, kinda like WinUpdate
+    # define very close step size of JulianDay and download data for a year, smallest step size that CLEA has
     @staticmethod
     def horizon_data(orbit_body, julian_day_n, target_body_string):
         data = callhorizons.query(orbit_body, smallbody=False)
