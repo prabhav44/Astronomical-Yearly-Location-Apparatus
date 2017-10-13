@@ -1,3 +1,5 @@
+# gotta say, goddamn I'm good - Prabhav
+
 def brad_alg(ra):
     # analyze every block of 10
     for i in range(10, len(ra), 10):
