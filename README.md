@@ -1,4 +1,4 @@
-# Jupiter_Moons
+# Astronomical-Yearly-Location-Apparatus
 Jupiter moons project
 
 Remember Project CLEA and the Io speed of light lab?
