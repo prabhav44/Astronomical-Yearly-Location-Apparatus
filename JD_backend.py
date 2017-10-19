@@ -1,11 +1,12 @@
 import callhorizons
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from math import floor, fabs
+from math import floor, fabs, cos, sqrt
 from numba.decorators import jit
 
 
 class JDHorizonData:
+    # for implementation later
     @staticmethod
     @jit
     def jd_alg(year, month, day, hour, minute, second):
@@ -24,6 +25,7 @@ class JDHorizonData:
 
         return jdn
 
+    # compiling horizons scraper into single function, for use later
     @staticmethod
     def horizon_data(orbit_body, target_body, start_d, end_d, step):
         data = callhorizons.query(orbit_body, smallbody=False)
@@ -31,9 +33,7 @@ class JDHorizonData:
         data.get_ephemerides(target_body)
         return data['RA'], data['DEC']
 
-    gd_first = '2017-05-24 01:00'
-    gd_last = '2018-05-24 01:00'
-
+    # compiling list  of GD's
     @staticmethod
     def db_gen_gd(gd_first):
         # separating function for performance
@@ -68,7 +68,6 @@ class JDHorizonData:
 
         ra = ra_i(real_ra)
 
-        @jit
         def ra_inter_alg(ra):
             # analyze every block of 10
             for i in range(10, len(ra), 10):
@@ -90,7 +89,8 @@ class JDHorizonData:
                             ra[j - 1] = ((ra[j] - ra[j - 2]) / 2) + ra[j - 2]
 
                         elif ra[j] <= ra[j - 10]:
-                            # in future going to have to split these intervals into smaller sub ones to account for even numbers
+                            # in future going to have to split these intervals
+                            # into smaller sub ones to account for even numbers
                             # defining before halfway point
                             ra[j - 5] = ((360 - ra[j - 10]) / 2) + ra[j - 10]
                             ra[j - 8] = ((ra[j - 5] - ra[j - 10]) / 2) + ra[j - 10]
@@ -118,7 +118,6 @@ class JDHorizonData:
 
         dec = dec_i(real_dec)
 
-        @jit
         def dec_inter_alg(dec):
             # analyze every block of 10
             for i in range(10, len(dec), 10):
@@ -154,4 +153,48 @@ class JDHorizonData:
 
         dec = dec_inter_alg(dec)
 
+        @jit
+        def rad(ra, dec):
+            for i in range(0, len(ra)):
+                ra[i] = ra[i] * (3.14159265358979323846 / 180)
+                dec[i] = dec[i] * (3.14159265358979323846 / 180)
+            return ra, dec
 
+        ra, dec = rad(ra, dec)
+
+        return ra, dec
+
+    # coordinate calculations
+    @staticmethod
+    @jit
+    def y_alg(ra, dec):
+        y = []
+        for i in range(0, len(ra), 1):
+            a = .002819 * cos(dec[i])
+            if ra[i] <= 3.14159265358979323846:
+                y.append(sqrt((a ** 2) - (a * cos(ra[i])) ** 2))
+            elif ra[i] > 3.14159265358979323846:
+                y.append(-(sqrt((a ** 2) - (a * cos(ra[i])) ** 2)))
+        return y
+
+    @staticmethod
+    @jit
+    def x_alg(ra, y, dec):
+        x = []
+        for i in range(0, len(ra), 1):
+            a = .002819 * cos(dec[i])
+            if 0 <= ra[i] < (3.14159265358979323846 / 2) or (3 * (3.14159265358979323846 / 2)) < ra[i] <= (
+                2 * 3.14159265358979323846):
+                x.append(sqrt((a ** 2) - (y[i] ** 2)))
+            elif (3.14159265358979323846 / 2) <= ra[i] <= (3 * (3.14159265358979323846 / 2)):
+                x.append(-(sqrt((a ** 2) - (y[i] ** 2))))
+        return x
+
+    @staticmethod
+    @jit
+    def z_alg(dec):
+        z = []
+        delta = .002819
+        for i in range(0, len(dec), 1):
+            z.append(sqrt((delta ** 2) - ((delta * cos(dec[i])) ** 2)))
+        return z
