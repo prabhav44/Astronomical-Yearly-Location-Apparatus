@@ -37,8 +37,9 @@ class Main(Frame):
         self.master.config(menu=menubar)
 
         fileMenu = Menu(menubar)
-        fileMenu.add_command(label="DO NOT CLICK!", command=self.onExit)
-        menubar.add_cascade(label="FIRE!", menu=fileMenu)
+        fileMenu.add_command(label="Top View", command=self.initUI)
+        fileMenu.add_command(label="Bye Felicia", command=self.onExit)
+        menubar.add_cascade(label="Commence", menu=fileMenu)
 
 
     def onExit(self):
