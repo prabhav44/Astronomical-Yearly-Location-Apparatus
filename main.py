@@ -5,8 +5,6 @@ GD_FIRST = '2017-05-24 01:00'
 GD_LAST = '2018-05-24 01:00'
 
 # only run if year later and they say yes they want to use new data
-# I watch twilight every night - Jaden Smith
-# How can mirrors be real if our eyes aren't real - Jaden Smith
 
 def db_gen(GD_FIRST, GD_LAST):
     gd_list = JDHorizonData.db_gen_gd(GD_FIRST)
