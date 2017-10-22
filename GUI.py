@@ -1,8 +1,20 @@
 from tkinter import Tk, BOTH, RIGHT, RAISED, Menu
 from tkinter.ttk import Frame, Button, Style
 
+from tkinter import *
+from tkinter import messagebox
 
 class Main(Frame):
+    top = Tk()
+
+    C = Canvas(top, bg="blue", height=700, width=450)
+    filename = PhotoImage(file="C:\\Users\\Owner\\Pictures\\Saved Pictures\\Jupiter.png")
+    background_label = Label(top, image=filename)
+    background_label.place(x=0, y=0, relwidth=1, relheight=1)
+
+    C.pack()
+    top.mainloop
+
     def __init__(self):
         super().__init__()
 
@@ -22,13 +34,13 @@ class Main(Frame):
 
         self.pack(fill=BOTH, expand=True)
 
-        nextButton = Button(self, text="Next")
+        nextButton = Button(self, text="Next", background = "green")
         nextButton.pack(side=RIGHT)
 
-        backButton = Button(self, text="Back")
+        backButton = Button(self, text="Back", background = "blue")
         backButton.pack(side=RIGHT)
 
-        recordButton = Button(self, text="Record")
+        recordButton = Button(self, text="Record", background = "red")
         recordButton.pack(side=RIGHT)
 
         self.master.title("Commence")
@@ -46,8 +58,8 @@ class Main(Frame):
         self.quit()
 
     def centerWindow(self):
-        w = 750
-        h = 500
+        w = 1036
+        h = 720
 
         sw = self.master.winfo_screenwidth()
         sh = self.master.winfo_screenheight()
