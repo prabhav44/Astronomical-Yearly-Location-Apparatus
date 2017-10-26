@@ -6,7 +6,7 @@ class Main(Frame):
     top = Tk()
 
     C = Canvas(top, bg="blue", height=700, width=450)
-    filename = PhotoImage(file="C:\\Users\\Owner\\Pictures\\Saved Pictures\\Jupiter.png")
+    filename = PhotoImage(file="C:\\Users\\Owner\\Pictures\\Saved Pictures\\Tp View.png")
     background_label = Label(top, image=filename)
     background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
@@ -22,11 +22,9 @@ class Main(Frame):
         self.master.title("Project Astronomical-Yearly-Location-Apparatus")
         self.pack(fill=BOTH, expand=1)
         self.centerWindow()
-
         self.master.title("Buttons")
         self.style = Style()
         self.style.theme_use("default")
-
         frame = Frame(self, relief=RAISED, borderwidth=1)
         frame.pack(fill=BOTH, expand=True)
 
@@ -62,12 +60,12 @@ class Main(Frame):
         self.quit()
 
     def centerWindow(self):
-        w = 1036
-        h = 720
+        w = 700
+        h = 700
 
+        self.master.resizable(width=False, height=False)
         sw = self.master.winfo_screenwidth()
         sh = self.master.winfo_screenheight()
-
         x = (sw - w) / 2
         y = (sh - h) / 2
         self.master.geometry('%dx%d+%d+%d' % (w, h, x, y))
