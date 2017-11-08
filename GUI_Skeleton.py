@@ -1,80 +1,45 @@
-from tkinter.ttk import Frame, Button, Style
-from tkinter import *
+import tkinter as tk
+import matplotlib.pyplot as plt
 
-
-class Main(Frame):
-    top = Tk()
-
-    C = Canvas(top, bg="blue", height=700, width=450)
-    filename = PhotoImage(file="C:\\Users\\Owner\\Pictures\\Saved Pictures\\Tp View.png")
-    background_label = Label(top, image=filename)
-    background_label.place(x=0, y=0, relwidth=1, relheight=1)
-
-    C.pack()
-    top.mainloop
-
+class Main(tk.Tk):
     def __init__(self):
-        super().__init__()
-
-        self.initUI()
-
-    def initUI(self):
-        self.master.title("Project Astronomical-Yearly-Location-Apparatus")
-        self.pack(fill=BOTH, expand=1)
+        tk.Tk.__init__(self)
+        self.title("Project-Astronomical-Yearly-Location-Aparatus")
         self.centerWindow()
-        self.master.title("Buttons")
-        self.style = Style()
-        self.style.theme_use("default")
-        frame = Frame(self, relief=RAISED, borderwidth=1)
-        frame.pack(fill=BOTH, expand=True)
 
-        self.pack(fill=BOTH, expand=True)
+        self.menubar = tk.Menu(self)
+        self.fileMenu = tk.Menu(self.menubar,tearoff=0)
+        self.fileMenu.add_command(label="Side View", command = self.side_view)
+        self.fileMenu.add_command(label="Bye Felicia", command = self.onExit)
 
-        nextButton = Button(self, text="Next", background = "green")
-        nextButton.pack(side=RIGHT)
-
-        backButton = Button(self, text="Back", background = "blue")
-        backButton.pack(side=RIGHT)
-
-        recordButton = Button(self, text="Record", background = "red")
-        recordButton.pack(side=RIGHT)
-
-        self.master.title("Commence")
-
-        menubar = Menu(self.master)
-        self.master.config(menu=menubar)
-
-        fileMenu = Menu(menubar)
-        fileMenu.add_command(label="Side View", command=self.side_view)
-        fileMenu.add_command(label="Bye Felicia", command=self.onExit)
-        menubar.add_cascade(label="Commence", menu=fileMenu)
+        self.menubar.add_cascade(label="Commence", menu=self.fileMenu)
+        self.config(menu=self.menubar)
 
     def side_view(self):
-        t = Toplevel(self)
+        t = tk.Toplevel(self)
         t.wm_title("Side View")
-        l = Label(t, text="This is window")
-        l.pack(side="top", fill="both", expand=True, padx=100, pady=100)
-
+        l = tk.Label(t, text="This is window")
+        l.pack(side="top",fill="both",expand=True,padx=100,pady=100)
 
     def onExit(self):
-        self.quit()
+        self.destroy()
 
     def centerWindow(self):
         w = 700
         h = 700
+        self.button1 = tk.Button(self, text="Next")
+        self.button2 = tk.Button(self, text="Record")
+        self.button3 = tk.Button(self, text="Back")
+        self.button1.grid(row=1,column=1)
+        self.button2.grid(row=1,column=2)
+        self.button3.grid(row=1,column=3)
 
-        self.master.resizable(width=False, height=False)
-        sw = self.master.winfo_screenwidth()
-        sh = self.master.winfo_screenheight()
+        self.resizable(width=False, height=False)
+        sw = self.winfo_screenwidth()
+        sh = self.winfo_screenheight()
         x = (sw - w) / 2
         y = (sh - h) / 2
-        self.master.geometry('%dx%d+%d+%d' % (w, h, x, y))
+        self.geometry('%dx%d+%d+%d' % (w, h, x, y))
 
-
-def main():
-    ex = Main()
-    ex.mainloop()
-
-
-if __name__ == '__main__':
-    main()
+main = Main()
+main.mainloop()
