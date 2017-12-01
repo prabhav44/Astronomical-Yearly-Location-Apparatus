@@ -16,6 +16,6 @@ I hope that by open sourcing this I am able to inspire students of all kinds, wh
 
 I encourage the experienced programmer, the inexperienced scripter, the hobbyist, and above all those who simply think they can, to make an impact. I will actively maintain this repository and sub-projects for the foreseeable future in an effort to not only inspire those at FCC but to inspire learners of all kinds.
 
-I would like to thank my team for sticking with me through the thick of it. I would like to thank Dr. Wood for giving me an opportunity when all seemed lost.
+I would like to thank my team for sticking with me through the thick of it. I would like to thank Dr. Wood for giving me an opportunity when most would not.
 
 Thank you for your time
