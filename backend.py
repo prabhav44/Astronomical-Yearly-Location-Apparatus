@@ -1,3 +1,4 @@
+# this is more of a collection of functions
 import callhorizons
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
