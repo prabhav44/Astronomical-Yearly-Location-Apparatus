@@ -3,15 +3,16 @@
 # TODO: Check for database update
 # TODO: Enter date func
 # TODO: Lower memory usage by setting max amounts of graphs open in background, no idea how to do this yet
+# TODO: check counter in pickle file
 # Urgent:
-# TODO: define in sine graph window if pickle file is 0 then show warning
-
+# TODO: delete first entry in each pickle file list
+from scipy.optimize import curve_fit
 from tkinter.ttk import Frame, Button, Style
 from tkinter import *
 import sqlite3
 import matplotlib as plt
+from math import sin, cos
 from mpl_toolkits.mplot3d import Axes3D
-
 plt.use("TkAgg")
 import matplotlib.pyplot as pltw
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -58,23 +59,23 @@ gd_list = [to[0] for to in gd_list]
 # close connection
 conn.close()
 
-curday = gd_list.index(str(datetime.date.today()) + ' 01:00:00')
+curday = gd_list.index(str(datetime.date.today())+' 01:00:00')
 with open('i_pickle', 'wb') as initi:
     pickle.dump(curday, initi)
 
 # initial value of sine func file
-with open('io_pickle', 'wb') as io_init:
-    pickle.dump([[str(datetime.date.today()) + ' 01:00:00', 0, 0]], io_init)
+with open('io_pickle' , 'wb') as io_init:
+    pickle.dump([[str(datetime.date.today())+' 01:00:00', 0, 0]], io_init)
 
+with open('eur_pickle', 'wb') as eur_init:
+    pickle.dump([[str(datetime.date.today())+' 01:00:00', 0, 0]], eur_init)
 
-# with open('eur_pickle', 'wb') as eur_init:
-#    pickle.dump([[str(datetime.date.today())+' 01:00:00', 0, 0]], eur_init)
 
 class Main(Tk):
 
     def __init__(self):
         super(Main, self).__init__()
-        self.title("Jupiter and it's moons")
+        self.title("Jupiter and It's Moons")
         self.centerWindow()
         self.resizable(width=False, height=False)
         sw = self.winfo_screenwidth()
@@ -83,18 +84,14 @@ class Main(Tk):
         j = (sh - 743) / 2
         self.geometry('%dx%d+%d+%d' % (700, 770, t, j))
 
-        # Rob changed the fun buttons to something serious.... not fun -_-
-
-        # Rob stop changing the fun names dick
-
         self.menubar = Menu(self)
         self.fileMenu = Menu(self.menubar, tearoff=0)
-        self.fileMenu.add_command(label='Io Sine Graph', command=lambda: self.sine_view())
-        self.fileMenu.add_command(Label='Europa Sine Graph', command=lambda: self.sine_view())
-        self.fileMenu.add_separator()
-        self.fileMenu.add_command(label="Exit", command=self.onExit)
+        self.fileMenu.add_command(label='Io Sine Graph', command=lambda: self.io_sine_view())
+        self.fileMenu.add_command(label='Europa Sine Graph', command=lambda: self.eur_sine_view())
 
-        self.menubar.add_cascade(label="Commence", menu=self.fileMenu)
+        self.menubar.add_cascade(label="Initiate", menu=self.fileMenu, state=DISABLED)
+
+        self.menubar.add_cascade(label='Exit', command=self.onExit)
         self.config(menu=self.menubar)
 
     def onExit(self):
@@ -126,9 +123,7 @@ class Main(Tk):
         # initial JD label
         jd = StringVar(self)
         cur_day_dt = datetime.datetime.strptime(gd_list[curday], '%Y-%m-%d %H:%M:%S')
-        jd.set('Julian Day: ' + str(
-            backAlgs.jd_alg(cur_day_dt.year, cur_day_dt.month, cur_day_dt.day, cur_day_dt.hour, cur_day_dt.minute,
-                            cur_day_dt.second)))
+        jd.set('Julian Day: '+str(backAlgs.jd_alg(cur_day_dt.year, cur_day_dt.month, cur_day_dt.day, cur_day_dt.hour, cur_day_dt.minute, cur_day_dt.second)))
         jdate_lab = Label(self, textvariable=jd)
         jdate_lab.grid(row=2, column=0, sticky=SE)
 
@@ -158,7 +153,7 @@ class Main(Tk):
             with open('i_pickle', 'rb') as fiii:
                 prev = pickle.load(fiii)
             with open('i_pickle', 'wb') as fi:
-                pickle.dump((prev + var), fi)
+                pickle.dump((prev+var), fi)
 
             def graph():
                 # open variable on each run of wrapper
@@ -166,9 +161,8 @@ class Main(Tk):
                     i = pickle.load(fii)
 
                 cur_day_dt = datetime.datetime.strptime(gd_list[i], '%Y-%m-%d %H:%M:%S')
-                jd.set('Julian Day: ' + str(
-                    backAlgs.jd_alg(cur_day_dt.year, cur_day_dt.month, cur_day_dt.day, cur_day_dt.hour,
-                                    cur_day_dt.minute, cur_day_dt.second)))
+                jd.set('Julian Day: ' + str(backAlgs.jd_alg(cur_day_dt.year, cur_day_dt.month, cur_day_dt.day, cur_day_dt.hour,
+                                            cur_day_dt.minute, cur_day_dt.second)))
                 gd.set(gd_list[i] + ' UTC')
                 plt.rcParams['toolbar'] = 'None'
                 fig = pltw.figure(figsize=(7, 7))
@@ -192,6 +186,7 @@ class Main(Tk):
             graph()
 
         def record():
+            self.menubar.entryconfigure('Initiate', state=NORMAL)
             # extract ra, dec for both moons from DB
             rec_conn = sqlite3.connect('orbit_data.db')
             rec_curs = rec_conn.cursor()
@@ -204,23 +199,36 @@ class Main(Tk):
             io_dec_raw = rec_curs.fetchall()
             io_dec_raw = [p[0] for p in io_dec_raw]
 
+            # RA of Eur
+            rec_curs.execute('''SELECT ra FROM eur_orbit''')
+            eur_ra_raw = rec_curs.fetchall()
+            eur_ra_raw = [l[0] for l in eur_ra_raw]
+            # Dec of Eur
+            rec_curs.execute('''SELECT dec FROM eur_orbit''')
+            eur_dec_raw = rec_curs.fetchall()
+            eur_dec_raw = [w[0] for w in eur_dec_raw]
+            rec_conn.close()
+
+            # index variable goes for all data variables
             with open('i_pickle', 'rb') as rec_read:
                 # this is the current index variable at time that record button is pressed for every moon
                 rec_i = pickle.load(rec_read)
-            # what data do I need to plot the sine wave? so the gd's are gonna be the x-axis
-            # RA is x value for sin
-            # a is calculated from dec
 
-            i_dump = [gd_list[rec_i], io_ra_raw[rec_i], io_dec_raw[rec_i]]
-
+            # io relevant data dump
+            io_dump = [gd_list[rec_i], io_ra_raw[rec_i], io_dec_raw[rec_i]]
             with open('io_pickle', 'rb') as io_prev:
-                prev = pickle.load(io_prev)
-
-            comp_dump = prev + i_dump
-
+                prev_io = pickle.load(io_prev)
+            comp_dump_io = prev_io + io_dump
             with open('io_pickle', 'wb') as io_next:
-                pickle.dump(comp_dump, io_next)
-            # so each moons pickle file will have a string with previous value as well as new value written to it
+                pickle.dump(comp_dump_io, io_next)
+
+            # europa dump
+            eur_dump = [gd_list[rec_i], eur_ra_raw[rec_i], eur_dec_raw[rec_i]]
+            with open('eur_pickle', 'rb') as eur_prev:
+                prev_eur = pickle.load(eur_prev)
+            comp_dump_eur = prev_eur + eur_dump
+            with open('eur_pickle', 'wb') as eur_next:
+                pickle.dump(comp_dump_eur, eur_next)
 
         self.nextbutton = Button(self, text='Next', command=lambda: wrapper())
         self.nextbutton.grid(row=1, column=0, sticky=SE)
@@ -228,21 +236,122 @@ class Main(Tk):
         self.rec = Button(self, text='Record', command=lambda: record())
         self.rec.grid(row=1, column=0, sticky=SE, padx=35)
 
-    def sine_view(self):
-        t = Toplevel()
+    def io_sine_view(self):
+        with open('io_pickle', 'rb') as io_ev:
+            io_raw = pickle.load(io_ev)
+            del io_raw[0]
+        # storing dates as JD's
+        graph_jds = []
+        for cu in range(0, len(io_raw), 3):
+            gds_dt = datetime.datetime.strptime(io_raw[cu], '%Y-%m-%d %H:%M:%S')
+            graph_jds.append(backAlgs.jd_alg(gds_dt.year, gds_dt.month, gds_dt.day, gds_dt.hour,
+                                             gds_dt.minute, gds_dt.second))
+        graph_io_ra = []
+        for buffs in range(1, len(io_raw), 3):
+            graph_io_ra.append(io_raw[buffs])
+
+        graph_io_dec = []
+        for suck in range(2, len(io_raw), 3):
+            graph_io_dec.append(io_raw[suck])
+
+        io_graph_y = []
+        for brad in range(0, len(graph_io_ra), 1):
+            io_graph_a = .002819 * (np.cos(graph_io_dec[brad]))
+            io_graph_y.append(io_graph_a*np.sin(graph_io_ra[brad]))
+
+        io_t = Toplevel()
+        io_t.wm_title('Io sin Plot')
         plt.rcParams['toolbar'] = 'None'
-        sin_fig = pltw.figure(figsize=(7, 7))
-        sin_fig.add_subplot(111)
+        io_sin_fig = pltw.figure()
+        io_sin_fig.add_subplot(111)
 
-        # test data
-        freqs = np.arange(2, 20, 3)
-        sin_x = np.arange(0.0, 1.0, 0.001)
-        sin_y = np.sin(2 * np.pi * freqs[0] * sin_x)
-        pltw.plot(sin_x, sin_y, lw=2)
+        pltw.scatter(graph_io_ra, io_graph_y)
+        pltw.ylabel('Distance from Jupiter (AU)')
 
-        sincanvas = FigureCanvasTkAgg(sin_fig, t)
-        sincanvas.show()
-        sincanvas.get_tk_widget().grid(row=0, column=0)
+        io_sincanvas = FigureCanvasTkAgg(io_sin_fig, io_t)
+        io_sincanvas.show()
+        io_sincanvas.get_tk_widget().grid(row=0, column=0)
+
+        def sine_curve(io_x, io_y):
+            io_t.wm_title('Io sin Plot')
+            plt.rcParams['toolbar'] = 'None'
+            io_sin_fig = pltw.figure()
+            io_sin_fig.add_subplot(111)
+            pltw.scatter(io_x, io_y)
+            amp.set('Amplitude: .002819')
+            pltw.ylabel('Distance from Jupiter (AU)')
+            io_sincanvas = FigureCanvasTkAgg(io_sin_fig, io_t)
+            io_sincanvas.show()
+            io_sincanvas.get_tk_widget().grid(row=0, column=0)
+            io_sincanvas.draw()
+
+        amp = StringVar()
+        amp.set('Amplitude: ')
+        IOfitButton = Button(io_t, text='Fit Sin Curve', command=lambda: sine_curve(graph_io_ra, io_graph_y))
+        IOfitButton.grid(row=1, column=0, sticky=SE)
+        Io_amp = Label(io_t, textvariable=amp)
+        Io_amp.grid(row=1, column=0, sticky=SW)
+        Io_per = Label(io_t, text='Period: 152853.5232')
+        Io_per.grid(row=2, column=0, sticky=SW)
+
+
+    def eur_sine_view(self):
+        with open('eur_pickle', 'rb') as eur_ev:
+            eur_raw = pickle.load(eur_ev)
+            del eur_raw[0]
+        # storing dates as JD's
+        graph_jds = []
+        for cu in range(0, len(eur_raw), 3):
+            gds_dt = datetime.datetime.strptime(eur_raw[cu], '%Y-%m-%d %H:%M:%S')
+            graph_jds.append(backAlgs.jd_alg(gds_dt.year, gds_dt.month, gds_dt.day, gds_dt.hour,
+                                             gds_dt.minute, gds_dt.second))
+        graph_eur_ra = []
+        for buffs in range(1, len(eur_raw), 3):
+            graph_eur_ra.append(eur_raw[buffs])
+
+        graph_eur_dec = []
+        for suck in range(2, len(eur_raw), 3):
+            graph_eur_dec.append(eur_raw[suck])
+
+        eur_graph_y = []
+        for brad in range(0, len(graph_eur_ra), 1):
+            eur_graph_a = .004485 * (np.cos(graph_eur_dec[brad]))
+            eur_graph_y.append(eur_graph_a*np.sin(graph_eur_ra[brad]))
+
+        eur_t = Toplevel()
+        eur_t.wm_title('Europa sin Plot')
+        plt.rcParams['toolbar'] = 'None'
+        eur_sin_fig = pltw.figure()
+        eur_sin_fig.add_subplot(111)
+
+        pltw.scatter(graph_eur_ra, eur_graph_y)
+        pltw.ylabel('Distance from Jupiter (AU)')
+
+        eur_sincanvas = FigureCanvasTkAgg(eur_sin_fig, eur_t)
+        eur_sincanvas.show()
+        eur_sincanvas.get_tk_widget().grid(row=0, column=0)
+
+        def sine_curve(eur_x, eur_y):
+            eur_t.wm_title('Europa sin Plot')
+            plt.rcParams['toolbar'] = 'None'
+            eur_sin_fig = pltw.figure()
+            eur_sin_fig.add_subplot(111)
+            pltw.scatter(eur_x, eur_y)
+            amp.set('Amplitude: .004485')
+            pltw.ylabel('Distance from Jupiter (AU)')
+            eur_sincanvas = FigureCanvasTkAgg(eur_sin_fig, eur_t)
+            eur_sincanvas.show()
+            eur_sincanvas.get_tk_widget().grid(row=0, column=0)
+            eur_sincanvas.draw()
+
+        amp = StringVar()
+        amp.set('Amplitude: ')
+        eurfitButton = Button(eur_t, text='Fit Sin Curve', command=lambda: sine_curve(graph_eur_ra, eur_graph_y))
+        eurfitButton.grid(row=1, column=0, sticky=SE)
+        eur_amp = Label(eur_t, textvariable=amp)
+        eur_amp.grid(row=1, column=0, sticky=SW)
+        eur_per = Label(eur_t, text='Period: 306822.0384')
+        eur_per.grid(row=2, column=0, sticky=SW)
 
 
 def main():
