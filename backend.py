@@ -5,7 +5,7 @@ from math import floor, fabs, cos, sqrt
 from numba.decorators import jit
 
 
-class JDHorizonData:
+class backAlgs:
     # for implementation later
     @staticmethod
     @jit
@@ -20,8 +20,8 @@ class JDHorizonData:
             jdn += 1
 
         jdn = jdn + ((hour - 12) / 24) \
-              + (minute / 1440) \
-              + (second / 86400)
+                  + (minute / 1440) \
+                  + (second / 86400)
 
         return jdn
 
@@ -52,9 +52,9 @@ class JDHorizonData:
 
     # this algorithm should only be as slow as data pull
     @staticmethod
-    def db_gen_ra_dec(gd_first, gd_last):
+    def db_gen_ra_dec(moon, gd_first, gd_last):
         # actual not interpolated data use this to get alg for interpolating data, run this parallel with gd_gen
-        real_ra, real_dec = JDHorizonData.horizon_data(501, '500@599', gd_first, gd_last, '10 m')
+        real_ra, real_dec = JDHorizonData.horizon_data(moon, '500@599', gd_first, gd_last, '10 m')
 
         # these will run sequentially together concurrently with dec interpolation
         @jit
@@ -167,10 +167,10 @@ class JDHorizonData:
     # coordinate calculations
     @staticmethod
     @jit
-    def y_alg(ra, dec):
+    def y_alg(rad, ra, dec):
         y = []
         for i in range(0, len(ra), 1):
-            a = .002819 * cos(dec[i])
+            a = rad * cos(dec[i])
             if ra[i] <= 3.14159265358979323846:
                 y.append(sqrt((a ** 2) - (a * cos(ra[i])) ** 2))
             elif ra[i] > 3.14159265358979323846:
@@ -179,10 +179,10 @@ class JDHorizonData:
 
     @staticmethod
     @jit
-    def x_alg(ra, y, dec):
+    def x_alg(rad, ra, y, dec):
         x = []
         for i in range(0, len(ra), 1):
-            a = .002819 * cos(dec[i])
+            a = rad * cos(dec[i])
             if 0 <= ra[i] < (3.14159265358979323846 / 2) or (3 * (3.14159265358979323846 / 2)) < ra[i] <= (
                 2 * 3.14159265358979323846):
                 x.append(sqrt((a ** 2) - (y[i] ** 2)))
@@ -192,9 +192,9 @@ class JDHorizonData:
 
     @staticmethod
     @jit
-    def z_alg(dec):
+    def z_alg(rad, dec):
         z = []
-        delta = .002819
+        delta = rad
         for i in range(0, len(dec), 1):
             z.append(sqrt((delta ** 2) - ((delta * cos(dec[i])) ** 2)))
         return z
