@@ -18,5 +18,4 @@ I encourage the experienced programmer, the inexperienced scripter, the hobbyist
 
 I would like to thank my team for sticking with me through the thick of it. I would like to thank Dr. Wood for giving me an opportunity when all seemed lost.
 
-Thank you for your time,
-Prabhav Parashar
+Thank you for your time
