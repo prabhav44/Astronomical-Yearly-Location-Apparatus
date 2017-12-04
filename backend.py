@@ -55,7 +55,7 @@ class backAlgs:
     @staticmethod
     def db_gen_ra_dec(moon, gd_first, gd_last):
         # actual not interpolated data use this to get alg for interpolating data, run this parallel with gd_gen
-        real_ra, real_dec = JDHorizonData.horizon_data(moon, '500@599', gd_first, gd_last, '10 m')
+        real_ra, real_dec = backAlgs.horizon_data(moon, '500@599', gd_first, gd_last, '10 m')
 
         # these will run sequentially together concurrently with dec interpolation
         @jit
