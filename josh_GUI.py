@@ -1,7 +1,7 @@
 # Codename: Astronomical-Yearly-Location-Apparatus
 # TechDebt:
 # TODO: Check for database update
-# TODO: Enter date func
+# TODO: Enter date function
 # TODO: Lower memory usage by setting max amounts of graphs open in background, no idea how to do this yet
 # TODO: check counter in pickle file
 # Urgent:
@@ -20,6 +20,7 @@ import numpy as np
 import pickle
 import datetime
 from backend import backAlgs
+from scipy.optimize import curve_fit
 
 # connect to DB and get all our data
 conn = sqlite3.connect('orbit_data.db')
@@ -255,9 +256,10 @@ class Main(Tk):
             graph_io_dec.append(io_raw[suck])
 
         io_graph_y = []
-        for brad in range(0, len(graph_io_ra), 1):
-            io_graph_a = .002819 * (np.cos(graph_io_dec[brad]))
-            io_graph_y.append(io_graph_a*np.sin(graph_io_ra[brad]))
+        io_graph_a = []
+        for brad in range(0, len(graph_jds), 1):
+            io_graph_a.append(.002819 * (np.cos(graph_io_dec[brad])))
+            io_graph_y.append(io_graph_a[brad]*np.sin(3.548152371*graph_jds[brad]))
 
         io_t = Toplevel()
         io_t.wm_title('Io sin Plot')
@@ -267,19 +269,25 @@ class Main(Tk):
 
         pltw.scatter(graph_io_ra, io_graph_y)
         pltw.ylabel('Distance from Jupiter (AU)')
+        pltw.xticks([])
 
         io_sincanvas = FigureCanvasTkAgg(io_sin_fig, io_t)
         io_sincanvas.show()
         io_sincanvas.get_tk_widget().grid(row=0, column=0)
 
-        def sine_curve(io_x, io_y):
-            io_t.wm_title('Io sin Plot')
-            plt.rcParams['toolbar'] = 'None'
+        def sine_curve():
+            def func(x, A):
+                return A*np.sin(3.548152371*x)
+            popt, pcov = curve_fit(func, np.array(graph_jds, dtype='float'), io_graph_y)
             io_sin_fig = pltw.figure()
             io_sin_fig.add_subplot(111)
-            pltw.scatter(io_x, io_y)
-            amp.set('Amplitude: .002819')
+
+            pltw.scatter(graph_io_ra, io_graph_y)
+            pltw.scatter(np.array(graph_io_ra, dtype='float64'), func(np.array(graph_jds, dtype='float'), *popt))
             pltw.ylabel('Distance from Jupiter (AU)')
+            pltw.xticks([])
+            amp_gen = func(np.array(graph_jds, dtype='float'), *popt)/np.sin(3.548152371*np.array(graph_jds, dtype='float'))
+            amp.set('Amplitude: '+str(amp_gen[0]))
             io_sincanvas = FigureCanvasTkAgg(io_sin_fig, io_t)
             io_sincanvas.show()
             io_sincanvas.get_tk_widget().grid(row=0, column=0)
@@ -287,7 +295,7 @@ class Main(Tk):
 
         amp = StringVar()
         amp.set('Amplitude: ')
-        IOfitButton = Button(io_t, text='Fit Sin Curve', command=lambda: sine_curve(graph_io_ra, io_graph_y))
+        IOfitButton = Button(io_t, text='Fit Sin Curve', command=lambda: sine_curve())
         IOfitButton.grid(row=1, column=0, sticky=SE)
         Io_amp = Label(io_t, textvariable=amp)
         Io_amp.grid(row=1, column=0, sticky=SW)
@@ -314,9 +322,10 @@ class Main(Tk):
             graph_eur_dec.append(eur_raw[suck])
 
         eur_graph_y = []
-        for brad in range(0, len(graph_eur_ra), 1):
-            eur_graph_a = .004485 * (np.cos(graph_eur_dec[brad]))
-            eur_graph_y.append(eur_graph_a*np.sin(graph_eur_ra[brad]))
+        eur_graph_a = []
+        for brad in range(0, len(graph_jds), 1):
+            eur_graph_a.append(.004485 * (np.cos(graph_eur_dec[brad])))
+            eur_graph_y.append(eur_graph_a[brad]*np.sin(3.548152371*graph_jds[brad]))
 
         eur_t = Toplevel()
         eur_t.wm_title('Europa sin Plot')
@@ -326,19 +335,25 @@ class Main(Tk):
 
         pltw.scatter(graph_eur_ra, eur_graph_y)
         pltw.ylabel('Distance from Jupiter (AU)')
+        pltw.xticks([])
 
         eur_sincanvas = FigureCanvasTkAgg(eur_sin_fig, eur_t)
         eur_sincanvas.show()
         eur_sincanvas.get_tk_widget().grid(row=0, column=0)
 
-        def sine_curve(eur_x, eur_y):
-            eur_t.wm_title('Europa sin Plot')
-            plt.rcParams['toolbar'] = 'None'
-            eur_sin_fig = pltw.figure()
-            eur_sin_fig.add_subplot(111)
-            pltw.scatter(eur_x, eur_y)
-            amp.set('Amplitude: .004485')
+        def sine_curve():
+            def func(x, A):
+                return A*np.sin(3.548152371*x)
+            popt, pcov = curve_fit(func, np.array(graph_jds, dtype='float'), eur_graph_y)
+            io_sin_fig = pltw.figure()
+            io_sin_fig.add_subplot(111)
+
+            pltw.scatter(graph_eur_ra, eur_graph_y)
+            pltw.scatter(np.array(graph_eur_ra, dtype='float64'), func(np.array(graph_jds, dtype='float'), *popt))
             pltw.ylabel('Distance from Jupiter (AU)')
+            pltw.xticks([])
+            amp_gen = func(np.array(graph_jds, dtype='float'), *popt)/np.sin(3.548152371*np.array(graph_jds, dtype='float'))
+            amp.set('Amplitude: '+str(amp_gen[0]))
             eur_sincanvas = FigureCanvasTkAgg(eur_sin_fig, eur_t)
             eur_sincanvas.show()
             eur_sincanvas.get_tk_widget().grid(row=0, column=0)
@@ -346,7 +361,7 @@ class Main(Tk):
 
         amp = StringVar()
         amp.set('Amplitude: ')
-        eurfitButton = Button(eur_t, text='Fit Sin Curve', command=lambda: sine_curve(graph_eur_ra, eur_graph_y))
+        eurfitButton = Button(eur_t, text='Fit Sin Curve', command=lambda: sine_curve())
         eurfitButton.grid(row=1, column=0, sticky=SE)
         eur_amp = Label(eur_t, textvariable=amp)
         eur_amp.grid(row=1, column=0, sticky=SW)
@@ -362,3 +377,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
