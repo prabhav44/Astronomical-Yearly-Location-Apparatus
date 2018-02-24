@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9e9fc3c1-e43e-42ff-a246-57f26b06ed21" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/legacy/.gitignore" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/legacy/.gitignore" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -71,6 +72,11 @@
               <item name="project-clea-python" type="b2602c69:ProjectViewProjectNode" />
               <item name="project-clea-python" type="462c0819:PsiDirectoryNode" />
               <item name="cutting_edge" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="project-clea-python" type="b2602c69:ProjectViewProjectNode" />
+              <item name="project-clea-python" type="462c0819:PsiDirectoryNode" />
+              <item name="legacy" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
