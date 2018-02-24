@@ -1,6 +1,6 @@
 Jupiter moons project
 
-Think of this as an open sourced water tower, what spigot you choose to make is up to you
+Think of this as a very high level API wrapper for the presentation of data on the JPL Horizons website
 
 The backend.py file is like an astronomy simulation multi-tool, modify it for any two planetary bodies (e.g. orbit of pluto around sun) and it will generate a 3D plot on a cartesian coordinate system when used in a way similar to the db_gen.py file (graph not provided, use any graphing software you would like)
 
