@@ -65,7 +65,7 @@ with open('i_pickle', 'wb') as initi:
     pickle.dump(curday, initi)
 
 # initial value of sine func file
-with open('io_pickle' , 'wb') as io_init:
+with open('io_pickle', 'wb') as io_init:
     pickle.dump([[str(datetime.date.today())+' 01:00:00', 0, 0]], io_init)
 
 with open('eur_pickle', 'wb') as eur_init:
@@ -76,7 +76,7 @@ class Main(Tk):
 
     def __init__(self):
         super(Main, self).__init__()
-        self.title("Jupiter and It's Moons")
+        self.title("Jupiter and Its Moons")
         self.centerWindow()
         self.resizable(width=False, height=False)
         sw = self.winfo_screenwidth()
@@ -123,7 +123,7 @@ class Main(Tk):
 
         # initial JD label
         jd = StringVar(self)
-        cur_day_dt = datetime.datetime.strptime(gd_list[curday], '%Y-%m-%d %H:%M:%S')
+        cur_day_dt = datetime.datetime.strptime(str(gd_list[curday]), '%Y-%m-%d %H:%M:%S')
         jd.set('Julian Day: '+str(backAlgs.jd_alg(cur_day_dt.year, cur_day_dt.month, cur_day_dt.day, cur_day_dt.hour, cur_day_dt.minute, cur_day_dt.second)))
         jdate_lab = Label(self, textvariable=jd)
         jdate_lab.grid(row=2, column=0, sticky=SE)
@@ -161,7 +161,7 @@ class Main(Tk):
                 with open('i_pickle', 'rb') as fii:
                     i = pickle.load(fii)
 
-                cur_day_dt = datetime.datetime.strptime(gd_list[i], '%Y-%m-%d %H:%M:%S')
+                cur_day_dt = datetime.datetime.strptime(str(gd_list[i]), '%Y-%m-%d %H:%M:%S')
                 jd.set('Julian Day: ' + str(backAlgs.jd_alg(cur_day_dt.year, cur_day_dt.month, cur_day_dt.day, cur_day_dt.hour,
                                             cur_day_dt.minute, cur_day_dt.second)))
                 gd.set(gd_list[i] + ' UTC')
@@ -377,4 +377,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

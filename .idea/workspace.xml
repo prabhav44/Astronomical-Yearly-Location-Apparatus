@@ -2,10 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9e9fc3c1-e43e-42ff-a246-57f26b06ed21" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cutting_edge/eur_pickle" afterPath="$PROJECT_DIR$/cutting_edge/eur_pickle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cutting_edge/i_pickle" afterPath="$PROJECT_DIR$/cutting_edge/i_pickle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cutting_edge/io_pickle" afterPath="$PROJECT_DIR$/cutting_edge/io_pickle" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -41,60 +37,7 @@
     <select />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="backend.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cutting_edge/backend.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1433">
-              <caret line="194" column="24" lean-forward="true" selection-start-line="194" selection-start-column="24" selection-end-line="194" selection-end-column="24" />
-              <folding>
-                <element signature="e#0#19#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="db_gen.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cutting_edge/db_gen.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="38" lean-forward="true" selection-start-line="9" selection-start-column="38" selection-end-line="9" selection-end-column="38" />
-              <folding>
-                <element signature="e#0#28#0" expanded="true" />
-                <marker date="1512019606002" expanded="true" signature="799:828" ph="DROP TABLE I... " />
-                <marker date="1512019606002" expanded="true" signature="850:924" ph="CREATE TABLE... io_orbit" />
-                <marker date="1512019606002" expanded="true" signature="950:996" ph="INSERT INTO io_orbit... " />
-                <marker date="1512019606002" expanded="true" signature="1455:1485" ph="DROP TABLE I... " />
-                <marker date="1512019606002" expanded="true" signature="1507:1582" ph="CREATE TABLE... eur_orbit" />
-                <marker date="1512019606002" expanded="true" signature="1608:1655" ph="INSERT INTO eur_orbit... " />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="josh_GUI.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/cutting_edge/josh_GUI.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2133">
-              <caret line="139" column="0" lean-forward="true" selection-start-line="139" selection-start-column="0" selection-end-line="139" selection-end-column="0" />
-              <folding>
-                <marker date="1519513876360" expanded="true" signature="917:939" ph="SELECT x FRO... io_orbit" />
-                <marker date="1519513876360" expanded="true" signature="1054:1076" ph="SELECT y FRO... io_orbit" />
-                <marker date="1519513876360" expanded="true" signature="1143:1165" ph="SELECT z FRO... io_orbit" />
-                <marker date="1519513876360" expanded="true" signature="1232:1255" ph="SELECT x FRO... eur_orbit" />
-                <marker date="1519513876360" expanded="true" signature="1351:1374" ph="SELECT y FRO... eur_orbit" />
-                <marker date="1519513876360" expanded="true" signature="1444:1467" ph="SELECT z FRO... eur_orbit" />
-                <marker date="1519513876360" expanded="true" signature="1537:1560" ph="SELECT gd FR... io_orbit" />
-                <marker date="1519513876360" expanded="true" signature="7082:7105" ph="SELECT ra FR... io_orbit" />
-                <marker date="1519513876360" expanded="true" signature="7260:7284" ph="SELECT dec F... io_orbit" />
-                <marker date="1519513876360" expanded="true" signature="7443:7467" ph="SELECT ra FR... eur_orbit" />
-                <marker date="1519513876360" expanded="true" signature="7626:7651" ph="SELECT dec F... eur_orbit" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -304,9 +247,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1433">
           <caret line="194" column="24" lean-forward="true" selection-start-line="194" selection-start-column="24" selection-end-line="194" selection-end-column="24" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -314,15 +255,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="9" column="38" lean-forward="true" selection-start-line="9" selection-start-column="38" selection-end-line="9" selection-end-column="38" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-            <marker date="1512019606002" expanded="true" signature="799:828" ph="DROP TABLE I... " />
-            <marker date="1512019606002" expanded="true" signature="850:924" ph="CREATE TABLE... io_orbit" />
-            <marker date="1512019606002" expanded="true" signature="950:996" ph="INSERT INTO io_orbit... " />
-            <marker date="1512019606002" expanded="true" signature="1455:1485" ph="DROP TABLE I... " />
-            <marker date="1512019606002" expanded="true" signature="1507:1582" ph="CREATE TABLE... eur_orbit" />
-            <marker date="1512019606002" expanded="true" signature="1608:1655" ph="INSERT INTO eur_orbit... " />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -330,19 +263,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2133">
           <caret line="139" column="0" lean-forward="true" selection-start-line="139" selection-start-column="0" selection-end-line="139" selection-end-column="0" />
-          <folding>
-            <marker date="1519513876360" expanded="true" signature="917:939" ph="SELECT x FRO... io_orbit" />
-            <marker date="1519513876360" expanded="true" signature="1054:1076" ph="SELECT y FRO... io_orbit" />
-            <marker date="1519513876360" expanded="true" signature="1143:1165" ph="SELECT z FRO... io_orbit" />
-            <marker date="1519513876360" expanded="true" signature="1232:1255" ph="SELECT x FRO... eur_orbit" />
-            <marker date="1519513876360" expanded="true" signature="1351:1374" ph="SELECT y FRO... eur_orbit" />
-            <marker date="1519513876360" expanded="true" signature="1444:1467" ph="SELECT z FRO... eur_orbit" />
-            <marker date="1519513876360" expanded="true" signature="1537:1560" ph="SELECT gd FR... io_orbit" />
-            <marker date="1519513876360" expanded="true" signature="7082:7105" ph="SELECT ra FR... io_orbit" />
-            <marker date="1519513876360" expanded="true" signature="7260:7284" ph="SELECT dec F... io_orbit" />
-            <marker date="1519513876360" expanded="true" signature="7443:7467" ph="SELECT ra FR... eur_orbit" />
-            <marker date="1519513876360" expanded="true" signature="7626:7651" ph="SELECT dec F... eur_orbit" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
