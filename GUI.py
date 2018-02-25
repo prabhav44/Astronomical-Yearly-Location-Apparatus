@@ -28,7 +28,7 @@ ax.plot(X_eur[0:5200], Y_eur[0:5200], Z_eur[0:5200])
 ax.set_xlim(-.0035, .0035)
 ax.set_ylim(-.0035, .0035)
 ax.set_zlim(-.015, .015)
-plt.axis('off')
+ax.axis('off')
 
 fig.tight_layout()
 plt.show()
