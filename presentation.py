@@ -18,10 +18,9 @@ fig = plt.figure()
 fig.patch.set_antialiased(True)
 fig.patch.set_facecolor('black')
 
-# First plot
+# First plot with orbit lines
 ax = fig.add_subplot(121, projection='3d')
 ax.patch.set_facecolor('grey')
-# Need a non transparent jupiter image
 ax.plot([0], [0], [0], marker='o', markersize=65, color="orange")
 ax.plot(X_io[0:2550], Y_io[0:2550], Z_io[0:2550])
 ax.plot(X_eur[0:5200], Y_eur[0:5200], Z_eur[0:5200])
