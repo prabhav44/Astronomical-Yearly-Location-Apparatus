@@ -3,10 +3,11 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from math import floor, fabs, cos, sqrt
 from numba.decorators import jit
+import sqlite3
 
+# TODO: Make into a living binary eating being
 
 class backAlgs:
-    # for implementation later
     @staticmethod
     @jit
     def jd_alg(year, month, day, hour, minute, second):
@@ -198,3 +199,42 @@ class backAlgs:
         for i in range(0, len(dec), 1):
             z.append(sqrt((delta ** 2) - ((delta * cos(dec[i])) ** 2)))
         return z
+
+    @staticmethod
+    def pull_sqldata():
+        conn = sqlite3.connect('orbit_data.db')
+        c = conn.cursor()
+        # select x values and save to x list
+        c.execute('''SELECT x FROM io_orbit''')
+        X_io = c.fetchall()
+        # remove tuples from list
+        X_io = [i[0] for i in X_io]
+
+        # same thing as above
+        c.execute('''SELECT y FROM io_orbit''')
+        Y_io = c.fetchall()
+        Y_io = [j[0] for j in Y_io]
+
+        c.execute('''SELECT z FROM io_orbit''')
+        Z_io = c.fetchall()
+        Z_io = [k[0] for k in Z_io]
+
+        c.execute('''SELECT x FROM eur_orbit''')
+        X_eur = c.fetchall()
+        # remove tuples from list
+        X_eur = [i[0] for i in X_eur]
+
+        c.execute('''SELECT y FROM eur_orbit''')
+        Y_eur = c.fetchall()
+        Y_eur = [j[0] for j in Y_eur]
+
+        c.execute('''SELECT z FROM eur_orbit''')
+        Z_eur = c.fetchall()
+        Z_eur = [k[0] for k in Z_eur]
+
+        c.execute('''SELECT gd FROM io_orbit''')
+        gd_list = c.fetchall()
+        gd_list = [to[0] for to in gd_list]
+        # close connection
+        conn.close()
+        return X_io, Y_io, Z_io, X_eur, Y_eur, Z_eur, gd_list

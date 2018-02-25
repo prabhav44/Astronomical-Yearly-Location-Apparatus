@@ -6,7 +6,6 @@
 # TODO: check counter in pickle file
 # Urgent:
 # TODO: delete first entry in each pickle file list
-from scipy.optimize import curve_fit
 from tkinter.ttk import Frame, Button, Style
 from tkinter import *
 import sqlite3
@@ -23,42 +22,7 @@ from backend import backAlgs
 from scipy.optimize import curve_fit
 
 # connect to DB and get all our data
-conn = sqlite3.connect('orbit_data.db')
-c = conn.cursor()
-
-# select x values and save to x list
-c.execute('''SELECT x FROM io_orbit''')
-X_io = c.fetchall()
-# remove tuples from list
-X_io = [i[0] for i in X_io]
-
-# same thing as above
-c.execute('''SELECT y FROM io_orbit''')
-Y_io = c.fetchall()
-Y_io = [j[0] for j in Y_io]
-
-c.execute('''SELECT z FROM io_orbit''')
-Z_io = c.fetchall()
-Z_io = [k[0] for k in Z_io]
-
-c.execute('''SELECT x FROM eur_orbit''')
-X_eur = c.fetchall()
-# remove tuples from list
-X_eur = [i[0] for i in X_eur]
-
-c.execute('''SELECT y FROM eur_orbit''')
-Y_eur = c.fetchall()
-Y_eur = [j[0] for j in Y_eur]
-
-c.execute('''SELECT z FROM eur_orbit''')
-Z_eur = c.fetchall()
-Z_eur = [k[0] for k in Z_eur]
-
-c.execute('''SELECT gd FROM io_orbit''')
-gd_list = c.fetchall()
-gd_list = [to[0] for to in gd_list]
-# close connection
-conn.close()
+X_io, Y_io, Z_io, X_eur, Y_eur, Z_eur, gd_list = backAlgs.pull_sqldata()
 
 curday = gd_list.index(str(datetime.date.today())+' 01:00:00')
 with open('i_pickle', 'wb') as initi:
