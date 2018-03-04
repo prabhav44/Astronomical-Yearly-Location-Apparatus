@@ -18,7 +18,7 @@ fig = plt.figure()
 fig.patch.set_antialiased(True)
 fig.patch.set_facecolor('black')
 
-# First plot with orbit lines
+# First plot with orbit line
 ax = fig.add_subplot(121, projection='3d')
 ax.patch.set_facecolor('grey')
 ax.plot([0], [0], [0], marker='o', markersize=65, color="orange")
